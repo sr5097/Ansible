@@ -1,6 +1,6 @@
 For grading purposes, please refer to apache_linux.yml
 
-To Test the Playbook:
+# To Test the Playbook:
 
 1. Ensure the Linux machine has ansible and SSH installed.
  ```
