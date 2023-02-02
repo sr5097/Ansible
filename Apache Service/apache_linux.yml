@@ -1,0 +1,85 @@
+# 3rd February 2023
+# Salomi Rao 
+# Team Bravo
+# Playbook to install Apache and create a hospital-themed website with a login page
+
+
+- name: Install Apache on Linux and create a hospital-themed website with a login page
+  # Define the target host where the playbook should be executed
+  hosts: local
+  # Use local connection method
+  connection: local
+  # Become superuser to perform administrative tasks
+  become: yes
+  tasks:
+    # Task to update the package cache
+    - name: Update package cache
+      apt:
+        update_cache: yes
+    
+    # Task to install Apache
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+    
+    # Task to create a directory for the Apache website
+    - name: Create Apache website directory
+      file:
+        # Path to the website directory
+        path: /var/www/html/hospital
+        # Ensure the directory exists
+        state: directory
+        # Set the directory permissions to 755 (rwxr-xr-x)
+        mode: 0755
+    
+    # Task to create the index.html file for the website
+    - name: Create Apache index.html file
+      copy:
+        # Content of the index.html file
+        content: |
+          <html>
+            <head>
+              <title>Hospital Website</title>
+            </head>
+            <body>
+              <h1>Welcome to Our Hospital</h1>
+              <p>We are dedicated to providing the best medical care for our patients.</p>
+              <a href="login.html">Login</a>
+            </body>
+          </html>
+        # Destination of the index.html file
+        dest: /var/www/html/hospital/index.html
+    
+    # Task to create the login.html file for the website
+    - name: Create Apache login.html file
+      copy:
+        # Content of the login.html file
+        content: |
+          <html>
+            <head>
+              <title>Login Page</title>
+            </head>
+            <body>
+              <h1>Login</h1>
+              <form action="#">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"><br><br>
+                <input type="submit" value="Submit">
+              </form>
+            </body>
+          </html>
+        # Destination of the login.html file
+        dest: /var/www/html/hospital/login.html
+    
+    # Task to start the Apache service
+    - name: Start Apache service
+      service:
+        # Name of the service
+        name: apache2
+        # Ensure the service is started
+        state: started
+        # Ensure the service is enabled to start on boot
+        enabled: yes

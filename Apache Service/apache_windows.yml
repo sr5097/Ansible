@@ -1,0 +1,17 @@
+- name: Install Apache on Windows
+  hosts: windows
+  tasks:
+    - name: Download Apache binary
+      win_get_url:
+        url: http://mirror.sdunix.com/apache/httpd/binaries/win32/httpd-2.4.46-o110n-x86-no_ssl.msi
+        dest: C:\Apache24\httpd.msi
+
+    - name: Install Apache
+      win_msi:
+        path: C:\Apache24\httpd.msi
+        state: present
+
+    - name: Start Apache service
+      win_service:
+        name: Apache2.4
+        state: started
